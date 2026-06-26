@@ -783,7 +783,7 @@ function showError(msg) {
   document.getElementById('results-section').innerHTML = `<div class="error-msg">⚠️ ${msg}</div>`;
 }
 
-// ── 右滑返回手勢 ──
+// ── 滑動手勢 ──
 (function() {
   let startX = 0, startY = 0, isHorizontal = false;
 
@@ -805,9 +805,34 @@ function showError(msg) {
     const diffX = e.changedTouches[0].clientX - startX;
     const diffY = Math.abs(e.changedTouches[0].clientY - startY);
     const detailVisible = document.getElementById("detail-view").style.display !== "none";
-    // 從左側1/3區域開始右滑，距離超過60px
+    const searchVisible = document.getElementById("search-view").style.display !== "none";
+
+    // 詳細頁：從左側右滑 → 返回
     if (isHorizontal && diffX > 60 && diffY < 80 && startX < window.innerWidth / 3 && detailVisible) {
       goBack();
+      return;
+    }
+
+    // 列表頁：左右滑切換班級（需有班級已選）
+    if (isHorizontal && Math.abs(diffX) > 80 && diffY < 80 && searchVisible) {
+      const classSelect = document.getElementById("class-select");
+      const gradeSelect = document.getElementById("grade-select");
+      if (!gradeSelect.value || classSelect.options.length <= 2) return; // 沒選年級或只有一個班
+
+      const currentIdx = classSelect.selectedIndex;
+      if (diffX < 0) {
+        // 向左滑 → 下一班
+        if (currentIdx < classSelect.options.length - 1) {
+          classSelect.selectedIndex = currentIdx + 1;
+          onFilterChange();
+        }
+      } else {
+        // 向右滑 → 上一班
+        if (currentIdx > 1) {
+          classSelect.selectedIndex = currentIdx - 1;
+          onFilterChange();
+        }
+      }
     }
   }, { passive: true });
 })();
