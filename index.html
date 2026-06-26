@@ -783,6 +783,21 @@ function showError(msg) {
   document.getElementById('results-section').innerHTML = `<div class="error-msg">⚠️ ${msg}</div>`;
 }
 
+// ── 右滑返回手勢 ──
+(function() {
+  let startX = 0, startY = 0;
+  document.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener("touchend", (e) => {
+    const diffX = e.changedTouches[0].clientX - startX;
+    const diffY = Math.abs(e.changedTouches[0].clientY - startY);
+    const detailVisible = document.getElementById("detail-view").style.display !== "none";
+    if (diffX > 80 && diffY < 50 && detailVisible) goBack();
+  }, { passive: true });
+})();
+
 window.onload = () => { initGoogleAuth(); };
 </script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
