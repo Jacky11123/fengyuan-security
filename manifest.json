@@ -2,7 +2,7 @@
   "name": "豐原高中 校安查詢系統",
   "short_name": "校安查詢",
   "description": "臺中市立豐原高級中等學校 校安人員學生查詢系統",
-  "start_url": "/fengyuan-security/",
+  "start_url": "/fengyuan-security/index.html",
   "scope": "/fengyuan-security/",
   "display": "standalone",
   "background_color": "#1a3a5c",
