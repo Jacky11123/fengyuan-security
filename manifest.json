@@ -2,19 +2,20 @@
   "name": "豐原高中 校安查詢系統",
   "short_name": "校安查詢",
   "description": "臺中市立豐原高級中等學校 校安人員學生查詢系統",
-  "start_url": "/",
+  "start_url": "/fengyuan-security/",
+  "scope": "/fengyuan-security/",
   "display": "standalone",
   "background_color": "#1a3a5c",
   "theme_color": "#1a3a5c",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "https://jacky11123.github.io/fengyuan-security/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icon-512.png",
+      "src": "https://jacky11123.github.io/fengyuan-security/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
