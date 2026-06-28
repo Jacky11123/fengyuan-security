@@ -626,92 +626,29 @@ async function fetchUserProfile() {
   return r.json();
 }
 
-function normalizeGrade(value, classValue = '') {
-  const text = String(value ?? '').trim();
-  const classText = String(classValue ?? '').trim();
-
-  // 班級若為 101／201／301（或 101班），第一碼就是年級；優先採用，避免
-  // 「113學年度高二」被錯誤抓成數字 1。
-  const classMatch = classText.match(/^0*([123])\d{2}(?:班)?$/);
-  if (classMatch) return classMatch[1];
-
-  const chineseDigit = { '一': '1', '壹': '1', '二': '2', '貳': '2', '三': '3', '參': '3' };
-
-  // 高1／高一／高中二年級
-  const highMatch = text.match(/高(?:中)?\s*([123一二三壹貳參])/);
-  if (highMatch) return chineseDigit[highMatch[1]] || highMatch[1];
-
-  // 1年級／一年級／第2年級
-  const gradeMatch = text.match(/(?:第\s*)?([123一二三壹貳參])\s*年級/);
-  if (gradeMatch) return chineseDigit[gradeMatch[1]] || gradeMatch[1];
-
-  // 欄位內容只有 1、2、3 或 01、02、03 時才直接判定
-  const plainMatch = text.match(/^0*([123])$/);
-  if (plainMatch) return plainMatch[1];
-
-  return '';
-}
-
-function normalizeClass(value) {
-  return String(value ?? '')
-    .trim()
-    .replace(/班$/, '')
-    .replace(/^0+(\d+)$/, '$1');
-}
-
 async function loadData() {
   showLoading();
   try {
     const base = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values`;
     const headers = { Authorization: 'Bearer ' + accessToken };
-
-    const fetchSheet = async (range) => {
-      const response = await fetch(`${base}/${encodeURIComponent(range)}`, { headers });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error?.message || `Google Sheets API 錯誤：${response.status}`);
-      }
-      return data;
-    };
-
     const [s1, s2] = await Promise.all([
-      fetchSheet('學生資料!A:J'),
-      fetchSheet('緊急聯絡人!A2:E'),
+      fetch(`${base}/學生資料!A1:J2000`, { headers }).then(r => r.json()),
+      fetch(`${base}/緊急聯絡人!A2:E2000`, { headers }).then(r => r.json()),
     ]);
-
-    const hdrs = (s1.values || [[]])[0].map(h => String(h).trim());
-    const gi = (k) => {
-      const index = hdrs.indexOf(k);
-      return index;  // -1 表示找不到，呼叫端會拿到 undefined（安全降級）
-    };
-
-    allStudents = (s1.values || []).slice(1).map(r => {
-      const rawClass = r[gi('班級')];
-      return {
-      id: String(r[gi('學號')] ?? '').trim(),
-      name: String(r[gi('姓名')] ?? '').trim(),
-      grade: normalizeGrade(r[gi('年級')], rawClass),
-      class: normalizeClass(rawClass),
-      seat: String(r[gi('座號')] ?? '').trim(),
-      photoId: String(r[gi('照片DriveID')] ?? '').trim(),
-      gender: String(r[gi('性別')] ?? '').trim(),
-      birth: String(r[gi('出生日期')] ?? '').trim(),
-      address: String(r[gi('住址')] ?? '').trim(),
-      mobile: String(r[gi('學生手機')] ?? '').trim()
-      };
-    }).filter(s => s.id && s.name);
-
+    const hdrs = (s1.values || [[]])[0];
+    const gi = (k) => hdrs.indexOf(k);
+    allStudents = (s1.values || []).slice(1).map(r => ({
+      id: r[gi('學號')]||'', name: r[gi('姓名')]||'', grade: r[gi('年級')]||'',
+      class: r[gi('班級')]||'', seat: r[gi('座號')]||'', photoId: r[gi('照片DriveID')]||'',
+      gender: r[gi('性別')]||'', birth: r[gi('出生日期')]||'',
+      address: r[gi('住址')]||'', mobile: r[gi('學生手機')]||''
+    })).filter(s => s.id && s.name);
     allContacts = (s2.values || []).map(r => ({
-      studentId: String(r[0] ?? '').trim(),
-      name: String(r[1] ?? '').trim(),
-      relation: String(r[2] ?? '').trim(),
-      phone: String(r[3] ?? '').trim()
+      studentId: r[0]||'', name: r[1]||'', relation: r[2]||'', phone: r[3]||''
     })).filter(c => c.studentId);
-
     showHint();
   } catch(e) {
-    console.error(e);
-    showError(`資料載入失敗：${e.message || '請重新整理頁面。'}`);
+    showError('資料載入失敗，請重新整理頁面。');
   }
 }
 
