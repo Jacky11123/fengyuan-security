@@ -3,513 +3,373 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#1B3A6B">
+  <meta name="theme-color" content="#1a3a5c">
   <title>豐原高中 校安查詢系統</title>
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --navy:    #1B3A6B;
-      --navy2:   #24508F;
-      --gold:    #B8972A;
-      --gold-lt: #F5EDD6;
-      --white:   #FFFFFF;
-      --gray50:  #F7F8FA;
-      --gray100: #EEF0F4;
-      --gray200: #DDE1E9;
-      --gray400: #9AA3B2;
-      --gray700: #3D4A5C;
-      --gray900: #1A2233;
-      --red:     #C0392B;
-      --radius:  6px;
-      --shadow:  0 1px 4px rgba(27,58,107,0.10);
-      --shadow2: 0 4px 16px rgba(27,58,107,0.13);
+      --navy:   #1a3a5c;
+      --blue:   #2563a8;
+      --sky:    #e8f0fa;
+      --white:  #ffffff;
+      --gray50: #f8f9fb;
+      --gray200:#e2e8f0;
+      --gray500:#64748b;
+      --gray800:#1e293b;
+      --red:    #dc2626;
+      --radius: 12px;
+      --shadow: 0 2px 12px rgba(26,58,92,0.10);
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: 'Noto Sans TC', sans-serif;
       background: var(--gray50);
-      color: var(--gray900);
+      color: var(--gray800);
       min-height: 100vh;
-      font-size: 15px;
-    }
-
-    /* ── 頂部橫幅 ── */
-    .top-banner {
-      background: var(--gold);
-      height: 4px;
     }
 
     /* ── Header ── */
     header {
       background: var(--navy);
       color: var(--white);
-      padding: 0 20px;
+      padding: 16px 20px;
       display: flex;
       align-items: center;
-      height: 56px;
-      gap: 14px;
+      gap: 12px;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
-    .header-emblem {
-      width: 34px;
-      height: 34px;
-      background: var(--gold);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-    .header-text { flex: 1; }
-    .header-title {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-    .header-sub {
-      font-size: 11px;
-      opacity: 0.65;
-      letter-spacing: 0.5px;
-    }
-    #back-btn {
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.2);
+    header .back-btn {
+      background: none;
+      border: none;
       color: var(--white);
-      font-size: 13px;
-      padding: 5px 12px;
-      border-radius: var(--radius);
+      font-size: 22px;
       cursor: pointer;
+      padding: 4px 8px 4px 0;
       display: none;
     }
-    .header-user { margin-left: auto; display: flex; align-items: center; gap: 8px; }
-    .user-name { font-size: 12px; opacity: 0.75; }
+    header h1 {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    header .subtitle {
+      font-size: 12px;
+      opacity: 0.7;
+      margin-top: 2px;
+    }
+    .header-user {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .header-user img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
     .logout-btn {
-      background: none;
-      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.15);
+      border: none;
       color: var(--white);
       font-size: 12px;
-      padding: 4px 10px;
-      border-radius: var(--radius);
+      padding: 5px 10px;
+      border-radius: 20px;
       cursor: pointer;
-      font-family: 'Noto Sans TC', sans-serif;
     }
 
-    /* ── Login ── */
+    /* ── Login Screen ── */
     #login-screen {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      background: linear-gradient(160deg, #1B3A6B 0%, #0F2246 100%);
-      color: var(--white);
       padding: 40px 24px;
+      background: var(--navy);
+      color: var(--white);
     }
-    .login-seal {
-      width: 80px;
-      height: 80px;
-      background: var(--gold);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
-      margin-bottom: 24px;
-      box-shadow: 0 4px 20px rgba(184,151,42,0.4);
-    }
-    .login-school {
-      font-size: 13px;
-      opacity: 0.6;
-      letter-spacing: 2px;
-      margin-bottom: 6px;
+    .login-logo {
+      font-size: 48px;
+      margin-bottom: 16px;
     }
     .login-title {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 700;
-      letter-spacing: 2px;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
     .login-subtitle {
-      font-size: 13px;
-      opacity: 0.55;
+      font-size: 14px;
+      opacity: 0.7;
       margin-bottom: 48px;
-      letter-spacing: 1px;
-    }
-    .login-divider {
-      width: 40px;
-      height: 2px;
-      background: var(--gold);
-      margin: 0 auto 48px;
     }
     .google-btn {
       display: flex;
       align-items: center;
       gap: 12px;
       background: var(--white);
-      color: var(--gray900);
+      color: var(--gray800);
       border: none;
-      border-radius: var(--radius);
+      border-radius: 8px;
       padding: 14px 28px;
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 500;
       font-family: 'Noto Sans TC', sans-serif;
       cursor: pointer;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      letter-spacing: 0.5px;
-      transition: transform 0.1s;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      transition: transform 0.1s, box-shadow 0.1s;
     }
     .google-btn:active { transform: scale(0.98); }
-    .google-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .google-btn svg { width: 20px; height: 20px; }
     .login-notice {
-      margin-top: 20px;
+      margin-top: 24px;
       font-size: 12px;
-      opacity: 0.4;
-      letter-spacing: 1px;
+      opacity: 0.5;
+      text-align: center;
     }
 
-    /* ── App ── */
+    /* ── Main App ── */
     #app { display: none; }
 
-    /* ── 查詢區 ── */
+    /* ── Search Section ── */
     .search-section {
       background: var(--navy);
-      padding: 16px 16px 20px;
-      border-bottom: 3px solid var(--gold);
-    }
-    .search-label {
-      font-size: 11px;
-      color: rgba(255,255,255,0.5);
-      letter-spacing: 1.5px;
-      margin-bottom: 8px;
+      padding: 16px 16px 24px;
     }
     .search-box {
       position: relative;
-      margin-bottom: 10px;
     }
     .search-box input {
       width: 100%;
-      padding: 11px 40px 11px 16px;
-      border: 1px solid rgba(255,255,255,0.15);
+      padding: 12px 16px 12px 44px;
+      border: none;
       border-radius: var(--radius);
       font-size: 15px;
       font-family: 'Noto Sans TC', sans-serif;
-      background: rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.12);
       color: var(--white);
       outline: none;
-      transition: border-color 0.2s, background 0.2s;
-      letter-spacing: 0.5px;
+      transition: background 0.2s;
     }
-    .search-box input::placeholder { color: rgba(255,255,255,0.35); }
-    .search-box input:focus {
-      border-color: var(--gold);
-      background: rgba(255,255,255,0.12);
+    .search-box input::placeholder { color: rgba(255,255,255,0.5); }
+    .search-box input:focus { background: rgba(255,255,255,0.18); }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.6);
+      font-size: 18px;
     }
-    .search-clear {
+    .clear-btn {
       position: absolute;
       right: 12px;
       top: 50%;
       transform: translateY(-50%);
       background: none;
       border: none;
-      color: rgba(255,255,255,0.4);
-      font-size: 16px;
+      color: rgba(255,255,255,0.6);
+      font-size: 18px;
       cursor: pointer;
       display: none;
-      padding: 0;
     }
 
+    /* Filter Row */
     .filter-row {
       display: flex;
       gap: 8px;
-      margin-bottom: 10px;
+      margin-top: 10px;
     }
     .filter-row select {
       flex: 1;
-      padding: 10px 12px;
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: var(--radius);
+      padding: 9px 12px;
+      border: none;
+      border-radius: 8px;
       font-size: 14px;
       font-family: 'Noto Sans TC', sans-serif;
-      background: rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.12);
       color: var(--white);
       outline: none;
       appearance: none;
       cursor: pointer;
     }
-    .filter-row select:focus { border-color: var(--gold); }
-    .filter-row select option { color: var(--gray900); background: var(--white); }
+    .filter-row select option { color: var(--gray800); background: var(--white); }
 
+    /* Student ID Search */
     .id-search {
       display: flex;
       gap: 8px;
+      margin-top: 8px;
     }
     .id-search input {
       flex: 1;
-      padding: 10px 14px;
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: var(--radius);
+      padding: 9px 14px;
+      border: none;
+      border-radius: 8px;
       font-size: 14px;
       font-family: 'Noto Sans TC', sans-serif;
-      background: rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.12);
       color: var(--white);
       outline: none;
     }
-    .id-search input::placeholder { color: rgba(255,255,255,0.35); }
-    .id-search input:focus { border-color: var(--gold); }
+    .id-search input::placeholder { color: rgba(255,255,255,0.5); }
     .id-search button {
-      padding: 10px 18px;
-      background: var(--gold);
+      padding: 9px 18px;
+      background: var(--blue);
       color: var(--white);
       border: none;
-      border-radius: var(--radius);
+      border-radius: 8px;
       font-size: 14px;
-      font-weight: 600;
       font-family: 'Noto Sans TC', sans-serif;
       cursor: pointer;
-      letter-spacing: 0.5px;
-      white-space: nowrap;
     }
 
-    /* ── 結果區 ── */
-    .results-section { padding: 16px; }
+    /* ── Results ── */
+    .results-section {
+      padding: 16px;
+    }
     .results-header {
-      font-size: 12px;
-      color: var(--gray400);
+      font-size: 13px;
+      color: var(--gray500);
       margin-bottom: 12px;
-      letter-spacing: 0.5px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .results-header::before {
-      content: '';
-      display: inline-block;
-      width: 3px;
-      height: 12px;
-      background: var(--gold);
-      border-radius: 2px;
+      padding: 0 2px;
     }
 
-    /* 單人完整卡片 */
+    /* Single result → full card */
     .student-full-card {
       background: var(--white);
       border-radius: var(--radius);
-      box-shadow: var(--shadow2);
+      box-shadow: var(--shadow);
       overflow: hidden;
-      border-top: 3px solid var(--navy);
+      margin-bottom: 16px;
     }
-    .photo-wrap {
-      background: linear-gradient(135deg, #EEF2F8 0%, #E0E8F4 100%);
+    .student-full-card .photo-wrap {
+      background: var(--sky);
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 28px 20px 20px;
-      position: relative;
+      justify-content: center;
+      padding: 28px 0 20px;
     }
-    .photo-wrap::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: var(--gray200);
-    }
-    .photo-wrap img {
-      width: 100px;
-      height: 130px;
+    .student-full-card .photo-wrap img {
+      width: 110px;
+      height: 140px;
       object-fit: cover;
-      border-radius: 4px;
-      box-shadow: 0 4px 16px rgba(27,58,107,0.2);
-      border: 2px solid var(--white);
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
     }
-    .no-photo {
-      width: 100px;
-      height: 130px;
-      background: var(--gray100);
-      border-radius: 4px;
+    .student-full-card .photo-wrap .no-photo {
+      width: 110px;
+      height: 140px;
+      background: var(--gray200);
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 36px;
-      color: var(--gray400);
-      border: 2px solid var(--white);
+      font-size: 40px;
+      color: var(--gray500);
     }
-    .student-name-header {
-      margin-top: 14px;
+    .student-full-card .info {
+      padding: 20px;
+    }
+    .student-full-card .name {
       font-size: 22px;
       font-weight: 700;
-      color: var(--navy);
-      letter-spacing: 2px;
-    }
-    .student-badge {
-      margin-top: 6px;
-      background: var(--navy);
-      color: var(--white);
-      font-size: 11px;
-      padding: 3px 10px;
-      border-radius: 20px;
-      letter-spacing: 1px;
-    }
-
-    .info-block { padding: 0 20px; }
-    .section-title {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--gold);
-      letter-spacing: 2px;
-      padding: 14px 0 8px;
-      border-bottom: 1px solid var(--gray200);
-      margin-bottom: 4px;
+      text-align: center;
+      margin-bottom: 16px;
     }
     .info-row {
       display: flex;
       align-items: center;
       padding: 10px 0;
-      border-bottom: 1px solid var(--gray100);
+      border-bottom: 1px solid var(--gray200);
       font-size: 14px;
     }
     .info-row:last-child { border-bottom: none; }
     .info-label {
-      color: var(--gray400);
-      width: 80px;
+      color: var(--gray500);
+      width: 90px;
       flex-shrink: 0;
+      font-size: 13px;
+    }
+    .info-value { font-weight: 500; }
+    .section-divider {
+      background: var(--sky);
+      padding: 8px 20px;
       font-size: 12px;
-      letter-spacing: 0.5px;
-    }
-    .info-value {
-      font-weight: 600;
-      color: var(--gray900);
-      letter-spacing: 0.5px;
-    }
-    .contact-row {
-      display: flex;
-      flex-direction: column;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--gray100);
-      gap: 4px;
-    }
-    .contact-row:last-child { border-bottom: none; }
-    .contact-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--gray900);
-    }
-    .contact-relation {
-      font-size: 11px;
-      color: var(--gray400);
-      background: var(--gray100);
-      padding: 1px 8px;
-      border-radius: 3px;
-      display: inline-block;
-      margin-left: 6px;
-    }
-    .contact-phone {
-      font-size: 15px;
-      color: var(--navy2);
-      font-weight: 600;
+      font-weight: 700;
+      color: var(--blue);
       letter-spacing: 1px;
     }
-    .no-contact {
-      font-size: 13px;
-      color: var(--gray400);
-      padding: 12px 0;
-      text-align: center;
-    }
-    .card-footer {
-      background: var(--gray50);
-      padding: 10px 20px;
-      font-size: 11px;
-      color: var(--gray400);
-      border-top: 1px solid var(--gray200);
-      letter-spacing: 0.5px;
-    }
 
-    /* 多人列表 */
+    /* Multiple results → list */
     .student-list {
       background: var(--white);
       border-radius: var(--radius);
-      box-shadow: var(--shadow2);
+      box-shadow: var(--shadow);
       overflow: hidden;
-      border-top: 3px solid var(--navy);
     }
-    .list-header {
-      background: var(--navy);
-      color: var(--white);
-      padding: 10px 16px;
-      font-size: 12px;
-      letter-spacing: 1px;
-      display: flex;
-      gap: 20px;
-    }
-    .list-col { flex: 1; opacity: 0.7; }
     .student-list-item {
       display: flex;
       align-items: center;
-      padding: 13px 16px;
-      border-bottom: 1px solid var(--gray100);
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--gray200);
       cursor: pointer;
       transition: background 0.15s;
+      gap: 12px;
     }
     .student-list-item:last-child { border-bottom: none; }
-    .student-list-item:hover { background: var(--gray50); }
-    .student-list-item:active { background: var(--gold-lt); }
-    .item-seat {
-      width: 36px;
-      height: 36px;
-      background: var(--navy);
-      color: var(--white);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 700;
-      flex-shrink: 0;
-      margin-right: 12px;
+    .student-list-item:active { background: var(--sky); }
+    .student-list-item .item-info { flex: 1; }
+    .student-list-item .item-name {
+      font-size: 16px;
+      font-weight: 500;
     }
-    .item-info { flex: 1; }
-    .item-name { font-size: 16px; font-weight: 600; color: var(--gray900); }
-    .item-meta { font-size: 12px; color: var(--gray400); margin-top: 2px; letter-spacing: 0.5px; }
-    .item-arrow { color: var(--gray400); font-size: 18px; }
+    .student-list-item .item-meta {
+      font-size: 12px;
+      color: var(--gray500);
+      margin-top: 2px;
+    }
+    .student-list-item .arrow {
+      color: var(--gray500);
+      font-size: 18px;
+    }
 
-    /* 狀態訊息 */
+    /* Empty / Loading */
     .state-msg {
       text-align: center;
       padding: 60px 20px;
-      color: var(--gray400);
+      color: var(--gray500);
     }
-    .state-icon { font-size: 36px; margin-bottom: 12px; }
-    .state-text { font-size: 14px; line-height: 1.8; letter-spacing: 0.5px; }
+    .state-msg .icon { font-size: 40px; margin-bottom: 12px; }
+    .state-msg p { font-size: 14px; }
 
+    /* Error */
     .error-msg {
-      background: #fdf2f2;
-      border-left: 4px solid var(--red);
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      border-radius: 8px;
       padding: 12px 16px;
       font-size: 13px;
       color: var(--red);
-      border-radius: 0 var(--radius) var(--radius) 0;
       margin: 16px;
     }
   </style>
 </head>
 <body>
 
-<div class="top-banner"></div>
-
-<!-- 登入畫面 -->
+<!-- Login Screen -->
 <div id="login-screen">
-  <div class="login-seal">🏫</div>
-  <div class="login-school">FENGYUAN SENIOR HIGH SCHOOL</div>
+  <div class="login-logo">🏫</div>
   <div class="login-title">校安查詢系統</div>
   <div class="login-subtitle">臺中市立豐原高級中等學校</div>
-  <div class="login-divider"></div>
   <button class="google-btn" onclick="signIn()">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -522,77 +382,87 @@
   <div class="login-notice">僅限 @fysh.tc.edu.tw 帳號</div>
 </div>
 
-<!-- 主系統 -->
+<!-- Main App -->
 <div id="app">
-  <div class="top-banner"></div>
   <header>
-    <button id="back-btn" onclick="goBack()">← 返回</button>
-    <div class="header-emblem">🛡</div>
-    <div class="header-text">
-      <div class="header-title" id="header-title">校安查詢系統</div>
-      <div class="header-sub">臺中市立豐原高級中等學校</div>
+    <button class="back-btn" id="back-btn" onclick="goBack()">←</button>
+    <div>
+      <div id="header-title" style="font-size:17px;font-weight:700;">豐原高中 校安查詢</div>
     </div>
     <div class="header-user">
-      <span class="user-name" id="user-name"></span>
+      <img id="user-avatar" src="" alt="" style="display:none">
       <button class="logout-btn" onclick="signOut()">登出</button>
     </div>
   </header>
 
-  <!-- 查詢頁 -->
+  <!-- Search View -->
   <div id="search-view">
     <div class="search-section">
-      <div class="search-label">姓名查詢</div>
+      <!-- 姓名搜尋 -->
       <div class="search-box">
-        <input type="text" id="name-input" placeholder="輸入學生姓名..." oninput="onNameInput(this.value)">
-        <button class="search-clear" id="clear-btn" onclick="clearSearch()">✕</button>
+        <span class="search-icon">🔍</span>
+        <input type="text" id="name-input" placeholder="輸入姓名搜尋..."
+               oninput="onNameInput(this.value)">
+        <button class="clear-btn" id="clear-btn" onclick="clearSearch()">✕</button>
       </div>
 
-      <div class="search-label">班級篩選</div>
+      <!-- 班級篩選 -->
       <div class="filter-row">
-        <select id="grade-select" onchange="onGradeChange()">
-          <option value="">年級</option>
+        <select id="grade-select" onchange="onFilterChange()">
+          <option value="">年級（全部）</option>
           <option value="1">高一</option>
           <option value="2">高二</option>
           <option value="3">高三</option>
         </select>
         <select id="class-select" onchange="onFilterChange()">
-          <option value="">班級（請先選年級）</option>
+          <option value="">班級（全部）</option>
         </select>
       </div>
 
-      <div class="search-label">學號直查</div>
+      <!-- 學號直查 -->
       <div class="id-search">
-        <input type="text" id="id-input" placeholder="輸入學號（如 411001）" maxlength="8" inputmode="numeric">
+        <input type="text" id="id-input" placeholder="學號直接查詢（如 411001）"
+               maxlength="8" inputmode="numeric">
         <button onclick="searchById()">查詢</button>
       </div>
     </div>
 
     <div class="results-section" id="results-section">
       <div class="state-msg">
-        <div class="state-icon">🔍</div>
-        <div class="state-text">請輸入姓名、學號<br>或選擇年級班級</div>
+        <div class="icon">🔍</div>
+        <p>輸入姓名或學號<br>也可以用班級篩選</p>
       </div>
     </div>
   </div>
 
-  <!-- 詳細頁 -->
+  <!-- Detail View -->
   <div id="detail-view" style="display:none;">
     <div class="results-section" id="detail-content"></div>
   </div>
 </div>
 
 <script>
+// ============================================================
+// 設定區（上線前修改這裡）
+// ============================================================
 const CONFIG = {
   CLIENT_ID: '773530671501-77u0injdd4nkjauqvnto826f5glsg9vn.apps.googleusercontent.com',
   SHEET_ID:  '1pbAxCNWxy-h_OwFanoEc-L_jdNmDvxhsgHubYaPZWIY',
   ALLOWED_DOMAIN: 'fysh.tc.edu.tw',
+  DRIVE_PHOTO_FOLDER: 'YOUR_DRIVE_FOLDER_ID',
 };
 
-let allStudents = [];
-let allContacts = [];
+// ============================================================
+// 全域狀態
+// ============================================================
+let allStudents = [];   // Sheet1 資料
+let allContacts = [];   // Sheet2 緊急聯絡人
 let tokenClient;
 let accessToken = null;
 
+// ============================================================
+// Google 登入
+// ============================================================
 function initGoogleAuth() {
   tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: CONFIG.CLIENT_ID,
@@ -600,20 +470,36 @@ function initGoogleAuth() {
     callback: async (resp) => {
       if (resp.error) { alert('登入失敗：' + resp.error); return; }
       accessToken = resp.access_token;
+
+      // 驗證網域
       const profile = await fetchUserProfile();
       if (!profile.email.endsWith('@' + CONFIG.ALLOWED_DOMAIN)) {
         alert('僅限學校帳號（@' + CONFIG.ALLOWED_DOMAIN + '）登入');
-        signOut(); return;
+        signOut();
+        return;
       }
-      document.getElementById('user-name').textContent = profile.name || profile.email.split('@')[0];
+
+      // 顯示使用者
+      const avatar = document.getElementById('user-avatar');
+      if (profile.picture) {
+        avatar.src = profile.picture;
+        avatar.style.display = 'block';
+      }
+
+      // 顯示主畫面
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('app').style.display = 'block';
+
+      // 載入資料
       await loadData();
     },
   });
 }
 
-function signIn() { tokenClient.requestAccessToken({ prompt: 'select_account' }); }
+function signIn() {
+  tokenClient.requestAccessToken({ prompt: 'select_account' });
+}
+
 function signOut() {
   google.accounts.oauth2.revoke(accessToken, () => {
     accessToken = null;
@@ -621,147 +507,204 @@ function signOut() {
     document.getElementById('app').style.display = 'none';
   });
 }
+
 async function fetchUserProfile() {
-  const r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', { headers: { Authorization: 'Bearer ' + accessToken } });
+  const r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+    headers: { Authorization: 'Bearer ' + accessToken }
+  });
   return r.json();
 }
 
+// ============================================================
+// 載入 Google Sheets 資料
+// ============================================================
 async function loadData() {
   showLoading();
   try {
     const base = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values`;
     const headers = { Authorization: 'Bearer ' + accessToken };
+
     const [s1, s2] = await Promise.all([
-      fetch(`${base}/學生資料!A1:J2000`, { headers }).then(r => r.json()),
+      fetch(`${base}/學生資料!A2:F2000`, { headers }).then(r => r.json()),
       fetch(`${base}/緊急聯絡人!A2:E2000`, { headers }).then(r => r.json()),
     ]);
-    const hdrs = (s1.values || [[]])[0];
-    const gi = (k) => hdrs.indexOf(k);
-    allStudents = (s1.values || []).slice(1).map(r => ({
-      id: r[gi('學號')]||'', name: r[gi('姓名')]||'', grade: r[gi('年級')]||'',
-      class: r[gi('班級')]||'', seat: r[gi('座號')]||'', photoId: r[gi('照片DriveID')]||'',
-      gender: r[gi('性別')]||'', birth: r[gi('出生日期')]||'',
-      address: r[gi('住址')]||'', mobile: r[gi('學生手機')]||''
+
+    // Sheet1：學號, 姓名, 年級, 班級, 座號, 照片DriveID
+    allStudents = (s1.values || []).map(r => ({
+      id:      r[0] || '',
+      name:    r[1] || '',
+      grade:   r[2] || '',
+      class:   r[3] || '',
+      seat:    r[4] || '',
+      photoId: r[5] || '',
     })).filter(s => s.id && s.name);
+
+    // Sheet2：學號, 姓名, 關係, 電話, 備註
     allContacts = (s2.values || []).map(r => ({
-      studentId: r[0]||'', name: r[1]||'', relation: r[2]||'', phone: r[3]||''
+      studentId: r[0] || '',
+      name:      r[1] || '',
+      relation:  r[2] || '',
+      phone:     r[3] || '',
+      note:      r[4] || '',
     })).filter(c => c.studentId);
-    showHint();
-  } catch(e) {
-    showError('資料載入失敗，請重新整理頁面。');
+
+    // 產生班級選單
+    buildClassOptions();
+
+    showEmptyHint();
+  } catch (e) {
+    showError('載入資料失敗，請重新整理頁面。');
+    console.error(e);
   }
 }
 
-function onGradeChange() {
-  const g = document.getElementById('grade-select').value;
+function buildClassOptions() {
+  const gradeSelect = document.getElementById('grade-select');
   const classSelect = document.getElementById('class-select');
-  const classes = [...new Set(allStudents.filter(s => !g || s.grade === g).map(s => s.class))].sort((a,b) => parseInt(a)-parseInt(b));
-  classSelect.innerHTML = '<option value="">班級（全部）</option>';
-  classes.forEach(c => { classSelect.innerHTML += `<option value="${c}">${c}班</option>`; });
-  onFilterChange();
+
+  gradeSelect.onchange = () => {
+    const g = gradeSelect.value;
+    const classes = [...new Set(
+      allStudents
+        .filter(s => !g || s.grade === g)
+        .map(s => s.class)
+    )].sort();
+
+    classSelect.innerHTML = '<option value="">班級（全部）</option>';
+    classes.forEach(c => {
+      classSelect.innerHTML += `<option value="${c}">${c}班</option>`;
+    });
+    onFilterChange();
+  };
 }
 
+// ============================================================
+// 搜尋邏輯
+// ============================================================
 function onNameInput(val) {
   document.getElementById('clear-btn').style.display = val ? 'block' : 'none';
   if (val.length >= 1) {
-    const g = document.getElementById('grade-select').value;
-    const cls = document.getElementById('class-select').value;
-    search(val, g, cls);
-  } else { showHint(); }
+    search(val, '', '');
+  } else {
+    showEmptyHint();
+  }
 }
 
 function onFilterChange() {
-  const g = document.getElementById('grade-select').value;
-  const cls = document.getElementById('class-select').value;
-  const name = document.getElementById('name-input').value;
-  if (g || cls || name) search(name, g, cls);
-  else showHint();
+  const grade = document.getElementById('grade-select').value;
+  const cls   = document.getElementById('class-select').value;
+  const name  = document.getElementById('name-input').value;
+  if (grade || cls || name) {
+    search(name, grade, cls);
+  } else {
+    showEmptyHint();
+  }
 }
 
 function searchById() {
   const id = document.getElementById('id-input').value.trim();
   if (!id) return;
-  renderResults(allStudents.filter(s => s.id === id));
+  const found = allStudents.filter(s => s.id === id);
+  renderResults(found);
 }
 
 function clearSearch() {
   document.getElementById('name-input').value = '';
   document.getElementById('clear-btn').style.display = 'none';
   document.getElementById('grade-select').value = '';
-  document.getElementById('class-select').innerHTML = '<option value="">班級（請先選年級）</option>';
-  showHint();
+  document.getElementById('class-select').value = '';
+  showEmptyHint();
 }
 
 function search(name, grade, cls) {
   const results = allStudents.filter(s => {
-    return (!name || s.name.includes(name)) &&
-           (!grade || s.grade === grade) &&
-           (!cls || s.class === cls);
+    const matchName  = !name  || s.name.includes(name);
+    const matchGrade = !grade || s.grade === grade;
+    const matchClass = !cls   || s.class === cls;
+    return matchName && matchGrade && matchClass;
   });
   renderResults(results);
 }
 
+// ============================================================
+// 渲染結果
+// ============================================================
 function renderResults(results) {
-  const c = document.getElementById('results-section');
-  if (!results.length) {
-    c.innerHTML = `<div class="state-msg"><div class="state-icon">😔</div><div class="state-text">查無符合資料</div></div>`;
+  const container = document.getElementById('results-section');
+
+  if (results.length === 0) {
+    container.innerHTML = `
+      <div class="state-msg">
+        <div class="icon">😔</div>
+        <p>找不到符合的學生</p>
+      </div>`;
     return;
   }
+
   if (results.length === 1) {
-    c.innerHTML = `<div class="results-header">查詢結果：1 筆</div>` + buildFullCard(results[0]);
+    // 單筆 → 直接展開
+    container.innerHTML = `<div class="results-header">找到 1 筆</div>`;
+    container.innerHTML += buildFullCard(results[0]);
     return;
   }
-  c.innerHTML = `<div class="results-header">查詢結果：${results.length} 筆，點選查看詳細</div>`;
+
+  // 多筆 → 列表
+  container.innerHTML = `<div class="results-header">找到 ${results.length} 筆，點選查看詳細</div>`;
   const list = document.createElement('div');
   list.className = 'student-list';
-  list.innerHTML = `<div class="list-header"><span class="list-col">座號</span><span class="list-col">姓名</span><span class="list-col">班級</span></div>`;
   results.forEach(s => {
     const item = document.createElement('div');
     item.className = 'student-list-item';
     item.innerHTML = `
-      <div class="item-seat">${s.seat||'-'}</div>
       <div class="item-info">
         <div class="item-name">${s.name}</div>
-        <div class="item-meta">高${s.grade} ${s.class}班 · ${s.id}</div>
+        <div class="item-meta">${s.grade ? '高'+s.grade : ''}${s.class ? ' ' + s.class + '班' : ''} ${s.seat ? s.seat + '號' : ''} · ${s.id}</div>
       </div>
-      <div class="item-arrow">›</div>`;
+      <div class="arrow">›</div>`;
     item.onclick = () => showDetail(s);
     list.appendChild(item);
   });
-  c.appendChild(list);
+  container.appendChild(list);
 }
 
 function buildFullCard(s) {
   const contacts = allContacts.filter(c => c.studentId === s.id);
-  const photoSrc = s.photoId ? `https://lh3.googleusercontent.com/d/${s.photoId}=w300` : '';
+  const photoSrc = s.photoId
+    ? `https://lh3.googleusercontent.com/d/${s.photoId}=w300`
+    : '';
+
   const photoHtml = photoSrc
-    ? `<img src="${photoSrc}" alt="${s.name}" onerror="this.outerHTML='<div class=no-photo>👤</div>'">`
+    ? `<img src="${photoSrc}" alt="${s.name}" onerror="this.parentElement.innerHTML='<div class=no-photo>👤</div>'">`
     : `<div class="no-photo">👤</div>`;
-  const contactHtml = contacts.length
+
+  const contactRows = contacts.length
     ? contacts.map(c => `
-        <div class="contact-row">
-          <div class="contact-name">${c.name}<span class="contact-relation">${c.relation||'家長'}</span></div>
-          <div class="contact-phone">📞 ${c.phone}</div>
+        <div class="info-row">
+          <div class="info-label">${c.relation || '聯絡人'}</div>
+          <div class="info-value">${c.name}　${c.phone}</div>
         </div>`).join('')
-    : `<div class="no-contact">無緊急聯絡人資料</div>`;
+    : `<div class="info-row"><div class="info-label" style="width:100%;color:var(--gray500)">無緊急聯絡人資料</div></div>`;
+
   return `
     <div class="student-full-card">
-      <div class="photo-wrap">
-        ${photoHtml}
-        <div class="student-name-header">${s.name}</div>
-        <div class="student-badge">高${s.grade} ${s.class}班 ${s.seat}號</div>
+      <div class="photo-wrap">${photoHtml}</div>
+      <div class="info">
+        <div class="name">${s.name}</div>
+        <div class="info-row">
+          <div class="info-label">學號</div>
+          <div class="info-value">${s.id}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">年級班級</div>
+          <div class="info-value">高${s.grade} ${s.class}班</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">座號</div>
+          <div class="info-value">${s.seat} 號</div>
+        </div>
       </div>
-      <div class="info-block">
-        <div class="section-title">基本資料</div>
-        <div class="info-row"><div class="info-label">學號</div><div class="info-value">${s.id}</div></div>
-        <div class="info-row"><div class="info-label">年級班級</div><div class="info-value">高${s.grade} ${s.class}班</div></div>
-        <div class="info-row"><div class="info-label">座號</div><div class="info-value">${s.seat} 號</div></div>
-        ${s.address ? `<div class="info-row"><div class="info-label">住址</div><div class="info-value">${s.address}</div></div>` : ''}
-        ${s.mobile ? `<div class="info-row"><div class="info-label">學生手機</div><div class="info-value">${s.mobile}</div></div>` : ''}
-        <div class="section-title">緊急聯絡人</div>
-        ${contactHtml}
-      </div>
-      <div class="card-footer">豐原高中校安查詢系統 · 僅供校安業務使用</div>
+      <div class="section-divider">緊急聯絡人</div>
+      <div class="info">${contactRows}</div>
     </div>`;
 }
 
@@ -770,82 +713,36 @@ function showDetail(s) {
   document.getElementById('detail-view').style.display = 'block';
   document.getElementById('back-btn').style.display = 'block';
   document.getElementById('header-title').textContent = s.name;
-  document.getElementById('detail-content').innerHTML = `<div class="results-header">學生詳細資料</div>` + buildFullCard(s);
+  document.getElementById('detail-content').innerHTML = buildFullCard(s);
 }
 
 function goBack() {
   document.getElementById('detail-view').style.display = 'none';
   document.getElementById('search-view').style.display = 'block';
   document.getElementById('back-btn').style.display = 'none';
-  document.getElementById('header-title').textContent = '校安查詢系統';
+  document.getElementById('header-title').textContent = '豐原高中 校安查詢';
 }
 
+// ── UI helpers ──
 function showLoading() {
-  document.getElementById('results-section').innerHTML = `<div class="state-msg"><div class="state-icon">⏳</div><div class="state-text">載入學生資料中…</div></div>`;
+  document.getElementById('results-section').innerHTML = `
+    <div class="state-msg"><div class="icon">⏳</div><p>載入學生資料中…</p></div>`;
 }
-function showHint() {
-  document.getElementById('results-section').innerHTML = `<div class="state-msg"><div class="state-icon">🔍</div><div class="state-text">請輸入姓名、學號<br>或選擇年級班級</div></div>`;
+function showEmptyHint() {
+  document.getElementById('results-section').innerHTML = `
+    <div class="state-msg"><div class="icon">🔍</div><p>輸入姓名或學號<br>也可以用班級篩選</p></div>`;
 }
 function showError(msg) {
-  document.getElementById('results-section').innerHTML = `<div class="error-msg">⚠️ ${msg}</div>`;
+  document.getElementById('results-section').innerHTML =
+    `<div class="error-msg">⚠️ ${msg}</div>`;
 }
 
-// ── 滑動手勢 ──
-(function() {
-  let startX = 0, startY = 0, isHorizontal = false;
-
-  document.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    isHorizontal = false;
-  }, { passive: true });
-
-  document.addEventListener("touchmove", (e) => {
-    const dx = e.touches[0].clientX - startX;
-    const dy = Math.abs(e.touches[0].clientY - startY);
-    if (!isHorizontal && Math.abs(dx) > 10 && dy < 10) {
-      isHorizontal = true;
-    }
-  }, { passive: true });
-
-  document.addEventListener("touchend", (e) => {
-    const diffX = e.changedTouches[0].clientX - startX;
-    const diffY = Math.abs(e.changedTouches[0].clientY - startY);
-    const detailVisible = document.getElementById("detail-view").style.display !== "none";
-    const searchVisible = document.getElementById("search-view").style.display !== "none";
-
-    // 詳細頁：從左側右滑 → 返回
-    if (isHorizontal && diffX > 60 && diffY < 80 && startX < window.innerWidth / 3 && detailVisible) {
-      goBack();
-      return;
-    }
-
-    // 列表頁：左右滑切換班級（需有班級已選）
-    if (isHorizontal && Math.abs(diffX) > 80 && diffY < 80 && searchVisible) {
-      const classSelect = document.getElementById("class-select");
-      const gradeSelect = document.getElementById("grade-select");
-      if (!gradeSelect.value || classSelect.options.length <= 2) return; // 沒選年級或只有一個班
-
-      const currentIdx = classSelect.selectedIndex;
-      if (diffX < 0) {
-        // 向左滑 → 下一班
-        if (currentIdx < classSelect.options.length - 1) {
-          classSelect.selectedIndex = currentIdx + 1;
-          onFilterChange();
-        }
-      } else {
-        // 向右滑 → 上一班
-        if (currentIdx > 1) {
-          classSelect.selectedIndex = currentIdx - 1;
-          onFilterChange();
-        }
-      }
-    }
-  }, { passive: true });
-})();
-
+// ── Init ──
 window.onload = () => { initGoogleAuth(); };
 </script>
+
+<!-- Google Identity Services -->
 <script src="https://accounts.google.com/gsi/client" async defer></script>
+
 </body>
 </html>
