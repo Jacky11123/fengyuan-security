@@ -626,14 +626,21 @@ async function fetchUserProfile() {
   return r.json();
 }
 
-function normalizeGrade(value) {
+function normalizeGrade(value, classValue = '') {
   const text = String(value ?? '').trim();
-  const map = {
-    '1': '1', '01': '1', '高一': '1', '一年級': '1', '1年級': '1',
-    '2': '2', '02': '2', '高二': '2', '二年級': '2', '2年級': '2',
-    '3': '3', '03': '3', '高三': '3', '三年級': '3', '3年級': '3'
-  };
-  return map[text] || text;
+
+  // 支援：1、01、高1、高一、1年級、一年級、第2年級等格式
+  const digitMatch = text.match(/[123]/);
+  if (digitMatch) return digitMatch[0];
+
+  if (/[一壹]/.test(text)) return '1';
+  if (/[二貳]/.test(text)) return '2';
+  if (/[三參]/.test(text)) return '3';
+
+  // 年級欄空白時，嘗試由 101／201／301 這類班級代碼推算
+  const classText = String(classValue ?? '').trim();
+  const classMatch = classText.match(/^0*([123])\d{2}/);
+  return classMatch ? classMatch[1] : '';
 }
 
 function normalizeClass(value) {
@@ -659,8 +666,8 @@ async function loadData() {
     };
 
     const [s1, s2] = await Promise.all([
-      fetchSheet('學生資料!A1:J2000'),
-      fetchSheet('緊急聯絡人!A2:E2000'),
+      fetchSheet('學生資料!A:J'),
+      fetchSheet('緊急聯絡人!A2:E'),
     ]);
 
     const hdrs = (s1.values || [[]])[0].map(h => String(h).trim());
@@ -670,18 +677,21 @@ async function loadData() {
       return index;
     };
 
-    allStudents = (s1.values || []).slice(1).map(r => ({
+    allStudents = (s1.values || []).slice(1).map(r => {
+      const rawClass = r[gi('班級')];
+      return {
       id: String(r[gi('學號')] ?? '').trim(),
       name: String(r[gi('姓名')] ?? '').trim(),
-      grade: normalizeGrade(r[gi('年級')]),
-      class: normalizeClass(r[gi('班級')]),
+      grade: normalizeGrade(r[gi('年級')], rawClass),
+      class: normalizeClass(rawClass),
       seat: String(r[gi('座號')] ?? '').trim(),
       photoId: String(r[gi('照片DriveID')] ?? '').trim(),
       gender: String(r[gi('性別')] ?? '').trim(),
       birth: String(r[gi('出生日期')] ?? '').trim(),
       address: String(r[gi('住址')] ?? '').trim(),
       mobile: String(r[gi('學生手機')] ?? '').trim()
-    })).filter(s => s.id && s.name);
+      };
+    }).filter(s => s.id && s.name);
 
     allContacts = (s2.values || []).map(r => ({
       studentId: String(r[0] ?? '').trim(),
