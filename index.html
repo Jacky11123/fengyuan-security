@@ -632,11 +632,12 @@ async function loadData() {
     const base = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values`;
     const headers = { Authorization: 'Bearer ' + accessToken };
     const [s1, s2] = await Promise.all([
-      fetch(`${base}/學生資料!A2:F2000`, { headers }).then(r => r.json()),
+      fetch(`${base}/學生資料!A2:J2000`, { headers }).then(r => r.json()),
       fetch(`${base}/緊急聯絡人!A2:E2000`, { headers }).then(r => r.json()),
     ]);
     allStudents = (s1.values || []).map(r => ({
-      id: r[0]||'', name: r[1]||'', grade: r[2]||'', class: r[3]||'', seat: r[4]||'', photoId: r[5]||''
+      id: r[0]||'', name: r[1]||'', grade: r[2]||'', class: r[3]||'', seat: r[4]||'', photoId: r[5]||'',
+      gender: r[6]||'', birth: r[7]||'', address: r[8]||'', mobile: r[9]||''
     })).filter(s => s.id && s.name);
     allContacts = (s2.values || []).map(r => ({
       studentId: r[0]||'', name: r[1]||'', relation: r[2]||'', phone: r[3]||''
@@ -751,6 +752,8 @@ function buildFullCard(s) {
         <div class="info-row"><div class="info-label">學號</div><div class="info-value">${s.id}</div></div>
         <div class="info-row"><div class="info-label">年級班級</div><div class="info-value">高${s.grade} ${s.class}班</div></div>
         <div class="info-row"><div class="info-label">座號</div><div class="info-value">${s.seat} 號</div></div>
+        ${s.address ? `<div class="info-row"><div class="info-label">住址</div><div class="info-value">${s.address}</div></div>` : ''}
+        ${s.mobile ? `<div class="info-row"><div class="info-label">學生手機</div><div class="info-value">${s.mobile}</div></div>` : ''}
         <div class="section-title">緊急聯絡人</div>
         ${contactHtml}
       </div>
