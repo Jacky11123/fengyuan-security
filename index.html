@@ -584,7 +584,7 @@
 <script>
 const CONFIG = {
   CLIENT_ID: '773530671501-77u0injdd4nkjauqvnto826f5glsg9vn.apps.googleusercontent.com',
-  SHEET_ID:  '10H0ZCa6lHzPaS9gzUe4VZo-yrnub22GjrpPwAi03aGk',
+  SHEET_ID:  '1pbAxCNWxy-h_OwFanoEc-L_jdNmDvxhsgHubYaPZWIY',
   ALLOWED_DOMAIN: 'fysh.tc.edu.tw',
 };
 
@@ -675,7 +675,7 @@ async function loadData() {
     };
 
     const [s1, s2] = await Promise.all([
-      fetchSheet('學生資料!A:J'),
+      fetchSheet('學生資料!A:O'),
       fetchSheet('緊急聯絡人!A2:E'),
     ]);
 
